@@ -75,4 +75,47 @@ render(location.hash.slice(1)||'home');
       'فاز ۲ بارگذاری یا اجرا نشد.\n' +
       'پیام خطا: ' + error.message;
   }
-</script><script type="module" src="./phase3.js"></script></body></html>
+</script><div
+  id="phase3-load-status"
+  role="status"
+  style="
+    margin:16px;
+    padding:14px;
+    border:1px solid #d8c99d;
+    border-radius:10px;
+    background:#fff8e5;
+    color:#493d22;
+    direction:rtl;
+    font:14px/1.8 Tahoma,sans-serif;
+    white-space:pre-wrap;
+  "
+>
+  در حال بررسی فاز ۳…
+</div>
+
+<script type="module">
+  const phase3Status =
+    document.getElementById('phase3-load-status');
+
+  const phase3Timer = setTimeout(() => {
+    phase3Status.textContent =
+      'بارگذاری فاز ۳ طول کشیده است؛ دریافت فایل یا وابستگی‌ها هنوز تمام نشده است.';
+  }, 15000);
+
+  try {
+    await import('./phase3.js');
+
+    clearTimeout(phase3Timer);
+
+    phase3Status.textContent =
+      document.getElementById('p3open')
+        ? 'فاز ۳ اجرا شد؛ دکمه درخواست‌ها و گفت‌وگو در پایین صفحه است.'
+        : 'فایل اجرا شد، اما دکمه فاز ۳ ساخته نشد.';
+  } catch (error) {
+    clearTimeout(phase3Timer);
+
+    phase3Status.textContent =
+      'فاز ۳ اجرا نشد.\nپیام خطا: ' + error.message;
+  }
+</script>
+</script></body></html>
