@@ -1,0 +1,28 @@
+:root{--primary:#0b7a5a;--dark:#123;--muted:#5b6b68;--bg:#f6f8f7;--card:#fff;--border:#dde5e2}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Vazirmatn,sans-serif;background:var(--bg);color:var(--dark);line-height:1.8}
+.container{max-width:1100px;margin:auto;padding:16px}
+.site-header{background:#fff;border-bottom:1px solid var(--border)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-weight:800;color:var(--primary);text-decoration:none}
+.main-nav{display:flex;gap:10px;flex-wrap:wrap}
+.main-nav a{text-decoration:none;color:var(--dark);padding:8px 10px;border-radius:8px}
+.main-nav a:hover{background:#eef5f2}
+.hero{background:linear-gradient(135deg,#0b7a5a,#0e9e77);color:#fff;padding:40px;border-radius:18px;margin:18px 0}
+.hero h1{margin:0 0 8px}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--dark);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.grid{display:grid;gap:14px}.grid.two{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.grid.three{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.card.link{text-decoration:none;color:inherit;display:block}
+.section{margin:28px 0}
+.site-footer{margin-top:40px;padding:18px;background:#fff;border-top:1px solid var(--border);color:var(--muted)}
+form label{display:block;margin:10px 0;font-size:14px}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:inherit}
+textarea{min-height:110px}
+.charter-layout{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.chapter-list{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px;max-height:600px;overflow:auto}
+.chapter-list button{display:block;width:100%;text-align:right;padding:9px;border:0;background:transparent;border-radius:8px;cursor:pointer}
+.chapter-list button.active,.chapter-list button:hover{background:#eef5f2}
+.charter-content{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;min-height:300px}
+.tabs{display:flex;gap:8px;margin:12px 0}.tab{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer}.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+@media(max-width:800px){.charter-layout{grid-template-columns:1fr}}
