@@ -26,4 +26,53 @@ function form(t,field){return `<div class="card"><h2>پیش‌نمایش فرم 
 function bindForm(r){const f=$('draftForm');f.onsubmit=e=>e.preventDefault();$('draftSave').onclick=()=>{try{localStorage.setItem('lamerd_phase1_draft_'+r,JSON.stringify(Object.fromEntries(new FormData(f))));$('draftStatus').textContent='پیش‌نویس فقط در این مرورگر ذخیره شد؛ هیچ درخواستی ارسال نشده است.'}catch(e){$('draftStatus').textContent='ذخیره مرورگر در این محیط ممکن نیست؛ پیش‌نویس ذخیره نشد.'}};$('draftLoad').onclick=()=>{try{const d=JSON.parse(localStorage.getItem('lamerd_phase1_draft_'+r)||'null');if(!d){$('draftStatus').textContent='پیش‌نویسی وجود ندارد.';return}for(const k of ['name','subject','body'])f.elements[k].value=d[k]||'';$('draftStatus').textContent='پیش‌نویس محلی بازیابی شد.'}catch(e){$('draftStatus').textContent='بازیابی ممکن نیست.'}};$('draftClear').onclick=()=>{try{localStorage.removeItem('lamerd_phase1_draft_'+r);f.reset();$('draftStatus').textContent='پیش‌نویس پاک شد.'}catch(e){$('draftStatus').textContent='پاک‌کردن ذخیره مرورگر ممکن نیست.'}}}
 function bindCharter(){function draw(){document.querySelectorAll('[data-ch]').forEach(b=>b.classList.toggle('selected',+b.dataset.ch===ci));$('full').classList.toggle('selected',mode==='full');$('summary').classList.toggle('selected',mode==='summary');const items=chapters[ci].text.filter(t=>/^ماده\s*[۰-۹0-9]+/.test(t));$('articles').innerHTML='<option value="">همه مواد فصل</option>'+items.map((t,i)=>`<option value="${i}">${esc(t.split('ـ')[0].slice(0,40))}</option>`).join('');if(selectedArticle){const i=items.findIndex(t=>t.startsWith('ماده '+selectedArticle.replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])));if(i>=0)$('articles').value=String(i);selectedArticle=''}function content(){const val=$('articles').value;let texts=chapters[ci].text;if(val!==''){const target=items[+val],start=texts.indexOf(target);let end=start+1;while(end<texts.length&&!/^ماده\s*[۰-۹0-9]+/.test(texts[end]))end++;texts=texts.slice(start,end)}$('chapterText').innerHTML='<h2>'+esc(chapters[ci].title)+'</h2>'+(mode==='full'?texts.map(t=>'<p class="legal">'+esc(t)+'</p>').join(''):'<p>'+esc(summaries[ci])+'</p>')+(ci===6?button('ورود به درگاه مشارکت','participation'):'');}$('articles').disabled=mode==='summary';$('articles').onchange=content;content();$('prev').disabled=ci===0;$('next').disabled=ci===chapters.length-1}document.querySelectorAll('[data-ch]').forEach(b=>b.onclick=()=>{ci=+b.dataset.ch;draw()});$('full').onclick=()=>{mode='full';draw()};$('summary').onclick=()=>{mode='summary';draw()};$('prev').onclick=()=>{ci=Math.max(0,ci-1);draw()};$('next').onclick=()=>{ci=Math.min(chapters.length-1,ci+1);draw()};draw()}
 render(location.hash.slice(1)||'home');
-</script><script type="module" src="./phase2.js"></script></body></html>
+</script><div
+  id="phase2-load-status"
+  role="status"
+  style="
+    position:fixed;
+    bottom:80px;
+    left:16px;
+    right:16px;
+    z-index:9999;
+    padding:14px;
+    border:1px solid #d8c99d;
+    border-radius:10px;
+    background:#fff8e5;
+    color:#493d22;
+    direction:rtl;
+    font:14px/1.8 Tahoma,sans-serif;
+    white-space:pre-wrap;
+  "
+>
+  در حال بررسی بارگذاری فاز ۲…
+</div>
+
+<script type="module">
+  const statusBox = document.getElementById('phase2-load-status');
+
+  const timer = setTimeout(() => {
+    statusBox.textContent =
+      'بارگذاری فاز ۲ طول کشیده است؛ ممکن است یکی از فایل‌ها یا کتابخانه خارجی در دسترس نباشد.';
+  }, 15000);
+
+  try {
+    await import('./phase2.js');
+
+    clearTimeout(timer);
+
+    if (document.getElementById('p2open')) {
+      statusBox.textContent =
+        'فاز ۲ اجرا شد. دکمه «حساب واقعی / دسترسی‌ها» باید پایین صفحه باشد.';
+    } else {
+      statusBox.textContent =
+        'فایل اجرا شد، اما دکمه مورد انتظار ساخته نشد. محتوای phase2.js باید بررسی شود.';
+    }
+  } catch (error) {
+    clearTimeout(timer);
+
+    statusBox.textContent =
+      'فاز ۲ بارگذاری یا اجرا نشد.\n' +
+      'پیام خطا: ' + error.message;
+  }
+</script></body></html>
